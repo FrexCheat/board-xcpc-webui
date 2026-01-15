@@ -17,8 +17,6 @@ export interface ContestOptions {
   calculation_of_penalty?: CalculationOfPenalty;
   submission_timestamp_unit?: TimeUnit;
 
-  // deprecated, please use has_reaction_videos instead
-  submission_has_reaction?: boolean;
   has_reaction_videos?: boolean;
   // example: https://your.video.cdn/wf/2025/${submission_id}.mp4
   // ${submission_id} will be replaced with the submission id
@@ -27,6 +25,22 @@ export interface ContestOptions {
   // example: https://your.image.cdn/wf/2025/${team_id}.jpg
   // ${team_id} will be replaced with the team id
   team_photo_url_template?: Image;
+
+  // example: https://your.stream.cdn/wf/2025/${team_id}/webcam/index.m3u8
+  // ${team_id} will be replaced with the team id
+  team_webcam_stream_url_template?: string;
+
+  // example: https://your.stream.cdn/wf/2025/${team_id}/screen/index.m3u8
+  // ${team_id} will be replaced with the team id
+  team_screen_stream_url_template?: string;
+
+  // example: https://your.online.judge/contest/1234/submission/${submission_id}
+  // ${submission_id} will be replaced with the submission id
+  submission_external_url_template?: string;
+
+  // example: https://your.code.cdn/wf/2025/${submission_id}.zip
+  // ${submission_id} will be replaced with the submission id
+  submission_source_code_url_template?: string;
 }
 
 export type MedalPreset = "ccpc" | "icpc";
@@ -34,6 +48,8 @@ export type BannerMode = "ONLY_BANNER" | "ALL";
 
 export interface Contest {
   contest_name: Text;
+  description?: Text;
+  og_image?: Image;
 
   start_time: number | DateTimeISO8601String;
   end_time: number | DateTimeISO8601String;
@@ -60,11 +76,11 @@ export interface Contest {
   logo?: Image;
   banner?: Image;
   banner_mode?: BannerMode;
-  board_link?: string;
-
-  version?: string;
 
   options?: ContestOptions;
 
   organizations?: DataItem | Organizations;
+
+  board_link?: string;
+  version?: string;
 }

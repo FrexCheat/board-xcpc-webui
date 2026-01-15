@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Load nvm if available
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
 # shellcheck disable=SC1091
 [ -s "/app/xcpcio/python/.venv/bin/activate" ] && source "/app/xcpcio/python/.venv/bin/activate"
 
@@ -25,7 +22,7 @@ if [[ -n "${APP_PATH}" ]]; then
   echo "Exported ${APP_PATH} to ${EXPORT_PATH}"
 fi
 
-if [[ "${1}" = "primary" ]]; then
+if [[ "${1}" == "default" ]]; then
   echo "Done"
 else
   exec "${@}"

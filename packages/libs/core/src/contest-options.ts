@@ -9,10 +9,14 @@ export class ContestOptions {
 
   submissionEnableActionField: boolean;
   submissionHasReactionField: boolean;
+  submissionHasExternalUrlField: boolean;
 
   reactionVideoUrlTemplate?: string;
+  submissionExternalUrlTemplate?: string;
 
   teamPhotoTemplate?: Image;
+  teamWebcamStreamUrlTemplate?: string;
+  teamScreenStreamUrlTemplate?: string;
 
   constructor() {
     this.calculationOfPenalty = "in_minutes";
@@ -23,6 +27,7 @@ export class ContestOptions {
 
     this.submissionEnableActionField = false;
     this.submissionHasReactionField = false;
+    this.submissionHasExternalUrlField = false;
   }
 }
 
@@ -38,13 +43,21 @@ export function createContestOptions(contestOptionsJSON: IContestOptions = {}): 
     o.submissionTimestampUnit = j.submission_timestamp_unit;
   }
 
-  if (j.submission_has_reaction || j.has_reaction_videos) {
+  if (j.has_reaction_videos) {
     o.submissionHasReactionField = true;
   }
 
-  o.submissionEnableActionField = o.submissionHasReactionField;
+  if (j.submission_external_url_template) {
+    o.submissionHasExternalUrlField = true;
+    o.submissionExternalUrlTemplate = j.submission_external_url_template;
+  }
+
+  o.submissionEnableActionField = o.submissionHasReactionField || o.submissionHasExternalUrlField;
   o.reactionVideoUrlTemplate = j.reaction_video_url_template;
   o.teamPhotoTemplate = j.team_photo_url_template;
+
+  o.teamWebcamStreamUrlTemplate = j.team_webcam_stream_url_template;
+  o.teamScreenStreamUrlTemplate = j.team_screen_stream_url_template;
 
   return o;
 }

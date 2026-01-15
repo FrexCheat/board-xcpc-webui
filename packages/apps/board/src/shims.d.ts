@@ -1,8 +1,10 @@
 declare interface Window {
+  BASE_URL?: string;
   CDN_HOST: string;
   DATA_HOST: string;
   DATA_REGION: string;
   DEFAULT_LANG: string;
+  REFETCH_INTERVAL: number;
   DATA_SOURCE?: string;
 }
 

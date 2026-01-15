@@ -17,11 +17,13 @@ export default antfu(
       "dist/**/*",
       "cache/**/*",
       "node_modules/**/*",
+      "packages/apps/board/.vite-ssg-temp/**/*",
 
       "data/**/*",
       "**/test-data/**/*",
 
       "python/**/*",
+      ".pytest_cache/**/*",
 
       "*.html",
     ],

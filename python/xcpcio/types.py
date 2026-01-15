@@ -82,10 +82,10 @@ class Image(BaseModel):
     base64: Optional[str] = None
     type: Optional[Literal["png", "svg", "jpg", "jpeg"]] = None
 
-    preset: Optional[ImagePreset] = None
-
     width: Optional[int] = None
     height: Optional[int] = None
+
+    preset: Optional[ImagePreset] = None
 
 
 class DataItem(BaseModel):
@@ -151,6 +151,7 @@ class Submission(BaseModel):
     is_ignore: Optional[bool] = None
 
     reaction: Optional[SubmissionReaction] = None
+    missing_reaction: Optional[bool] = None
 
 
 class Submissions(RootModel[List[Submission]]):
@@ -178,6 +179,8 @@ class Team(BaseModel):
     location: Optional[str] = None
     icpc_id: Optional[str] = None
 
+    ip: Optional[str] = None
+
     extra: Dict[str, Any] = Field(default_factory=dict, exclude=True)
 
     def add_group(self, group: str):
@@ -201,10 +204,17 @@ class ContestOptions(BaseModel):
     reaction_video_url_template: Optional[str] = None
 
     team_photo_url_template: Optional[Image] = None
+    team_webcam_stream_url_template: Optional[str] = None
+    team_screen_stream_url_template: Optional[str] = None
+
+    submission_external_url_template: Optional[str] = None
+    submission_source_code_url_template: Optional[str] = None
 
 
 class Contest(BaseModel):
     contest_name: Text = ""
+    description: Optional[Text] = None
+    og_image: Optional[Image] = None
 
     start_time: Union[int, DateTimeISO8601String] = 0
     end_time: Union[int, DateTimeISO8601String] = 0
@@ -231,13 +241,13 @@ class Contest(BaseModel):
     logo: Optional[Image] = None
     banner: Optional[Image] = None
     banner_mode: Optional[BannerMode] = None
-    board_link: Optional[str] = None
-
-    version: Optional[str] = None
 
     options: Optional[ContestOptions] = None
 
     organizations: Optional[Union[DataItem, Organizations]] = None
+
+    board_link: Optional[str] = None
+    version: Optional[str] = None
 
     thaw_time: int = Field(default=0x3F3F3F3F3F3F3F3F, exclude=True)
 

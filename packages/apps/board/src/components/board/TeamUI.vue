@@ -105,18 +105,18 @@ function isRenderByVisible() {
     >
       <div flex>
         <div
-          float-left pl-2 font-serif
+          float-left pl-2
         >
           <div
-            v-if="team.organizationRank > -1"
+            v-if="!!team.organization && team.isFirstRankOfOrganization"
           >
-            {{ team.organizationRank }}
+            {{ team.organization.rank }}
           </div>
         </div>
         <div
           flex-1
         >
-          {{ team.organization }}
+          {{ team.organization?.name.getOrDefault(lang) }}
         </div>
         <div float-right />
       </div>

@@ -22,6 +22,7 @@ export class Submission {
   language?: string;
 
   reaction?: SubmissionReaction;
+  externalUrl?: string;
 
   status = SubmissionStatus.UNKNOWN;
   isIgnore = false;
@@ -156,10 +157,14 @@ export function createSubmission(submissionJSON: ISubmission, contest?: Contest)
 
   if (submissionJSON.reaction) {
     s.reaction = submissionJSON.reaction;
-  } else if (contest?.options.reactionVideoUrlTemplate) {
+  } else if (contest?.options.reactionVideoUrlTemplate && !submissionJSON.missing_reaction) {
     s.reaction = {
       url: contest.options.reactionVideoUrlTemplate.replace(/\$\{submission_id\}/, s.id),
     };
+  }
+
+  if (contest?.options.submissionExternalUrlTemplate) {
+    s.externalUrl = contest.options.submissionExternalUrlTemplate.replace(/\$\{submission_id\}/, s.id);
   }
 
   return s;
@@ -167,10 +172,10 @@ export function createSubmission(submissionJSON: ISubmission, contest?: Contest)
 
 export function createSubmissions(submissionsJSON: ISubmissions, contest?: Contest): Submissions {
   if (Array.isArray(submissionsJSON)) {
-    return submissionsJSON.map((s, index) => createSubmission({ ...s, id: s.submission_id ?? String(index) }, contest));
+    return submissionsJSON.map((s, index) => createSubmission({ ...s, id: s.id ?? s.submission_id ?? String(index) }, contest));
   } else {
     const submissions = Object.entries(submissionsJSON).map(([submissionId, s]) =>
-      createSubmission({ ...s, id: s.submission_id ?? submissionId }, contest),
+      createSubmission({ ...s, id: s.id ?? s.submission_id ?? String(submissionId) }, contest),
     );
     return submissions;
   }
