@@ -30,7 +30,7 @@ const props = defineProps<{
   enableFilter?: EnableFilterOptions;
 }>();
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 const lang = computed(() => locale.value as unknown as Lang);
 
 const rank = computed(() => props.rank);
@@ -264,6 +264,18 @@ function openVideoModal(submissionReaction: SubmissionReaction) {
 function closeVideoModal() {
   showVideoModal.value = false;
 }
+
+const showRealtimeStreamModal = ref(false);
+const currentRealtimeStreamSubmissionId = ref("");
+
+function openRealtimeStreamModal(submissionId: string) {
+  currentRealtimeStreamSubmissionId.value = submissionId;
+  showRealtimeStreamModal.value = true;
+}
+
+function closeRealtimeStreamModal() {
+  showRealtimeStreamModal.value = false;
+}
 </script>
 
 <template>
@@ -279,6 +291,18 @@ function closeVideoModal() {
           :is-open="showVideoModal"
           :submission-reaction="currentSubmissionReaction"
           @close="closeVideoModal"
+        />
+      </div>
+
+      <div
+        v-if="showRealtimeStreamModal"
+        flex justify-start items-start
+      >
+        <RealtimeReactionStreamModal
+          :is-open="showRealtimeStreamModal"
+          :submission-id="currentRealtimeStreamSubmissionId"
+          :rank="rank"
+          @close="closeRealtimeStreamModal"
         />
       </div>
 
@@ -304,13 +328,13 @@ function closeVideoModal() {
             md:space-x-3 md:space-y-0
           >
             <div
-              v-if="rank.contest.organization && enableFilter?.organization"
+              v-if="rank.contest.options.enableOrganization && enableFilter?.organization"
               w-64
             >
               <TheMultiSelect
                 :options="orgOptions"
                 :selected-options="orgSelectedItems"
-                :placeholder="rank.contest.organization"
+                :placeholder="t('standings.organization')"
                 @select="orgOnSelect"
               />
             </div>
@@ -386,11 +410,11 @@ function closeVideoModal() {
                   Problem
                 </th>
                 <th
-                  v-if="rank.contest.organization"
+                  v-if="rank.contest.options.enableOrganization"
                   scope="col"
                   class="px-4 py-3"
                 >
-                  {{ rank.contest.organization }}
+                  {{ t("standings.organization") }}
                 </th>
                 <th
                   scope="col"
@@ -462,7 +486,7 @@ function closeVideoModal() {
                   </td>
 
                   <td
-                    v-if="rank.contest.organization"
+                    v-if="rank.contest.options.enableOrganization"
                     class="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white"
                   >
                     {{ rank.teamsMap.get(s.teamId)?.organization?.name.getOrDefault(lang) }}
@@ -525,20 +549,16 @@ function closeVideoModal() {
                     class="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white"
                   >
                     <div flex items-center gap-2>
-                      <Tooltip v-if="s.externalUrl">
-                        <a
-                          :href="s.externalUrl"
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      <Tooltip v-if="rank.contest.options.submissionHasRealtimeReactionStreamField">
+                        <div
                           flex items-center justify-start
                           text-lg
                           cursor-pointer
-                          hover:text-primary-600
-                        >
-                          <span i-material-symbols-link-rounded />
-                        </a>
+                          i-hugeicons-live-streaming-01
+                          @click="openRealtimeStreamModal(s.id)"
+                        />
                         <template #popper>
-                          View on Original OJ
+                          Realtime Reaction
                         </template>
                       </Tooltip>
 
@@ -552,6 +572,23 @@ function closeVideoModal() {
                         />
                         <template #popper>
                           Reaction Video
+                        </template>
+                      </Tooltip>
+
+                      <Tooltip v-if="s.externalUrl">
+                        <a
+                          :href="s.externalUrl"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          flex items-center justify-start
+                          text-lg
+                          cursor-pointer
+                          hover:text-primary-600
+                        >
+                          <span i-material-symbols-link-rounded />
+                        </a>
+                        <template #popper>
+                          View on Source Platform
                         </template>
                       </Tooltip>
                     </div>

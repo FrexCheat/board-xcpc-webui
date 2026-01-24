@@ -35,17 +35,27 @@ type_menu:
   options: Options
   utility: Utility
   countdown: Countdown
+  teams: Teams
+  info: Info
+
+info_modal:
+  color_legend: Color Legend
 
 streams:
   webcam: Webcam
   screen: Screen
   unavailable: Stream unavailable
+  realtime_reaction: Realtime Reaction
   layout:
     side_by_side: Side by Side
     pip: Picture in Picture
   pip:
     main: Main
     position: Position
+    top_left: Top Left
+    top_right: Top Right
+    bottom_left: Bottom Left
+    bottom_right: Bottom Right
 
 utility:
   tools: Tools
@@ -58,7 +68,9 @@ standings:
   remaining: Remaining
 
   place: Place
+  organization: Organization
   team: Team
+  group: Group
   solved: Solved
   penalty: Penalty
   dirt: Dirt
@@ -93,7 +105,10 @@ balloons:
 
 team_info:
   rank: Rank
+  team_id: Team ID
   team_name: Team Name
+  org_id: Org ID
+  org_name: Org Name
   organization: Organization
   group: Group
   members: Members
@@ -106,3 +121,14 @@ medal:
   silver: Silver Medal
   bronze: Bronze Medal
   honorable: Honorable Mention
+
+org_info:
+  rank: Rank
+  name: Organization
+  icpc_id: ICPC ID
+  teams_count: Teams Count
+
+pending_page:
+  no_teams: No teams registered yet
+  teams_tab: Teams
+  seat_map_tab: Seat Map

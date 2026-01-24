@@ -15,7 +15,6 @@ describe("contest-index", () => {
       ContestIndex {
         "boardLink": "/provincial-contest/2023/shandong",
         "contest": Contest {
-          "badge": undefined,
           "banner": undefined,
           "boardLink": undefined,
           "endTime": "2023-06-04T06:00:00.000Z",
@@ -46,17 +45,19 @@ describe("contest-index", () => {
           },
           "options": ContestOptions {
             "calculationOfPenalty": "in_minutes",
+            "enableOrganization": false,
             "submissionEnableActionField": false,
             "submissionHasExternalUrlField": false,
             "submissionHasLanguageField": false,
             "submissionHasReactionField": false,
+            "submissionHasRealtimeReactionStreamField": false,
             "submissionHasTimeField": false,
             "submissionTimestampUnit": "second",
           },
-          "organization": undefined,
           "penalty": undefined,
           "problems": [],
           "problemsMap": Map {},
+          "socialMedia": undefined,
           "startTime": "2023-06-04T01:00:00.000Z",
           "statusTimeDisplay": {
             "correct": true,
@@ -74,7 +75,6 @@ describe("contest-index", () => {
       ContestIndex {
         "boardLink": "/icpc/2009/dhu_online",
         "contest": Contest {
-          "badge": undefined,
           "banner": undefined,
           "boardLink": undefined,
           "endTime": "2009-09-11T06:00:00.000Z",
@@ -101,17 +101,19 @@ describe("contest-index", () => {
           },
           "options": ContestOptions {
             "calculationOfPenalty": "in_minutes",
+            "enableOrganization": false,
             "submissionEnableActionField": false,
             "submissionHasExternalUrlField": false,
             "submissionHasLanguageField": false,
             "submissionHasReactionField": false,
+            "submissionHasRealtimeReactionStreamField": false,
             "submissionHasTimeField": false,
             "submissionTimestampUnit": "second",
           },
-          "organization": undefined,
           "penalty": undefined,
           "problems": [],
           "problemsMap": Map {},
+          "socialMedia": undefined,
           "startTime": "2009-09-11T01:00:00.000Z",
           "statusTimeDisplay": {
             "correct": true,

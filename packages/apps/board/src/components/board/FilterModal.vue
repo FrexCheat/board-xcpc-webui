@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Rank, RankOptions, SelectOptionItem } from "@xcpcio/core";
 import type { Lang } from "@xcpcio/types";
+import type { ModalCloseReason } from "./Modal.vue";
 import _ from "lodash";
 
 const props = defineProps<{
@@ -79,23 +80,52 @@ function teamsOnSelect(selectedItems: Array<SelectOptionItem>, _lastSelectItem: 
   rankOptions.value.setFilterTeams(selectedItems);
 }
 
+const teamIdsOptions = computed(() => {
+  const res = rank.value.originTeams.map((t) => {
+    const teamName = t.name.getOrDefault(lang.value);
+    return {
+      value: t.id,
+      text: `${t.id} - ${teamName}`,
+    };
+  });
+
+  return res;
+});
+
+const teamIdsSelectedItems = ref<Array<SelectOptionItem>>(rankOptions.value.filterTeamIds);
+function teamIdsOnSelect(selectedItems: Array<SelectOptionItem>, _lastSelectItem: SelectOptionItem) {
+  teamIdsSelectedItems.value = selectedItems;
+  rankOptions.value.setFilterTeamIds(selectedItems);
+}
+
 async function onCancel() {
   rankOptions.value.setSelf(beforeRankOptions);
   await nextTick();
   isHidden.value = true;
 }
 
-async function onBeforeClose() {
-  await onCancel();
-}
-
 const localStorageKeyForFilterOrganizations = getLocalStorageKeyForFilterOrganizations();
 const localStorageKeyForFilterTeams = getLocalStorageKeyForFilterTeams();
+const localStorageKeyForFilterTeamIds = getLocalStorageKeyForFilterTeamIds();
+
+async function onBeforeClose(reason: ModalCloseReason) {
+  if (reason === "outside") {
+    // Click outside: confirm and save changes
+    localStorage.setItem(localStorageKeyForFilterOrganizations, JSON.stringify(orgSelectedItems.value));
+    localStorage.setItem(localStorageKeyForFilterTeams, JSON.stringify(teamsSelectedItems.value));
+    localStorage.setItem(localStorageKeyForFilterTeamIds, JSON.stringify(teamIdsSelectedItems.value));
+  } else {
+    // Esc key or X button: cancel and restore previous state
+    rankOptions.value.setSelf(beforeRankOptions);
+    await nextTick();
+  }
+}
 
 function onConfirm() {
   // can't use useStorage, maybe it's a bug
   localStorage.setItem(localStorageKeyForFilterOrganizations, JSON.stringify(orgSelectedItems.value));
   localStorage.setItem(localStorageKeyForFilterTeams, JSON.stringify(teamsSelectedItems.value));
+  localStorage.setItem(localStorageKeyForFilterTeamIds, JSON.stringify(teamIdsSelectedItems.value));
 
   isHidden.value = true;
 }
@@ -122,27 +152,6 @@ function onConfirm() {
           grid grid-cols-6 gap-y-4
         >
           <div
-            v-if="rank.contest.organization"
-            flex items-center
-            text-sm
-          >
-            {{ rank.contest.organization }}:
-          </div>
-
-          <div
-            v-if="rank.contest.organization"
-            flex items-center
-            w-full
-            col-span-6
-          >
-            <TheMultiSelect
-              :options="orgOptions"
-              :selected-options="orgSelectedItems"
-              @select="orgOnSelect"
-            />
-          </div>
-
-          <div
             text-sm
             flex items-center
           >
@@ -158,6 +167,46 @@ function onConfirm() {
               :options="teamsOptions"
               :selected-options="teamsSelectedItems"
               @select="teamsOnSelect"
+            />
+          </div>
+
+          <div
+            text-sm
+            flex items-center
+          >
+            Team ID:
+          </div>
+
+          <div
+            flex items-center
+            w-full
+            col-span-6
+          >
+            <TheMultiSelect
+              :options="teamIdsOptions"
+              :selected-options="teamIdsSelectedItems"
+              @select="teamIdsOnSelect"
+            />
+          </div>
+
+          <div
+            v-if="rank.contest.options.enableOrganization"
+            flex items-center
+            text-sm
+          >
+            {{ t("standings.organization") }}:
+          </div>
+
+          <div
+            v-if="rank.contest.options.enableOrganization"
+            flex items-center
+            w-full
+            col-span-6
+          >
+            <TheMultiSelect
+              :options="orgOptions"
+              :selected-options="orgSelectedItems"
+              @select="orgOnSelect"
             />
           </div>
         </div>

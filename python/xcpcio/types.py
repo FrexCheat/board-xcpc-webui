@@ -101,7 +101,18 @@ class Organization(BaseModel):
     icpc_id: Optional[str] = None
 
 
-Organizations = List[Organization]
+class Organizations(RootModel[List[Organization]]):
+    pass
+
+
+class SeatMapSection(BaseModel):
+    title: Optional[Text] = None
+    rowLabels: Optional[List[Optional[str]]] = None
+    grid: List[List[Optional[str]]] = Field(default_factory=list)
+
+
+class SeatMap(BaseModel):
+    sections: List[SeatMapSection] = Field(default_factory=list)
 
 
 class BalloonColor(BaseModel):
@@ -163,7 +174,7 @@ class Team(BaseModel):
     id: str = ""
     name: Text = ""
 
-    organization: str = ""
+    organization: Optional[str] = None
     organization_id: Optional[str] = None
 
     group: List[str] = Field(default_factory=list)
@@ -197,7 +208,13 @@ class Teams(RootModel[List[Team]]):
     pass
 
 
+class SocialMedia(BaseModel):
+    bilibili: Optional[str] = None
+    youtube: Optional[str] = None
+
+
 class ContestOptions(BaseModel):
+    enable_organization: Optional[bool] = None
     calculation_of_penalty: Optional[CalculationOfPenalty] = None
     submission_timestamp_unit: Optional[TimeUnit] = None
 
@@ -210,6 +227,9 @@ class ContestOptions(BaseModel):
 
     submission_external_url_template: Optional[str] = None
     submission_source_code_url_template: Optional[str] = None
+
+    realtime_reaction_webcam_stream_url_template: Optional[str] = None
+    realtime_reaction_screen_stream_url_template: Optional[str] = None
 
 
 class Contest(BaseModel):
@@ -231,9 +251,6 @@ class Contest(BaseModel):
 
     status_time_display: Dict[str, bool] = constants.FULL_STATUS_TIME_DISPLAY
 
-    badge: Optional[str] = None
-    organization: str = "School"
-
     medal: Optional[Union[Dict[str, Dict[str, int]], MedalPreset]] = None
 
     group: Optional[Dict[str, str]] = None
@@ -246,9 +263,12 @@ class Contest(BaseModel):
     options: Optional[ContestOptions] = None
 
     organizations: Optional[Union[DataItem, Organizations]] = None
+    seat_map: Optional[Union[DataItem, SeatMap]] = None
 
     board_link: Optional[str] = None
     version: Optional[str] = None
+
+    social_media: Optional[SocialMedia] = None
 
     thaw_time: int = Field(default=0x3F3F3F3F3F3F3F3F, exclude=True)
 

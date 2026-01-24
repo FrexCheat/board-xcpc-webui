@@ -30,6 +30,8 @@ export class RankOptions {
   filterOrganizationMap: Map<string, SelectOptionItem>;
   filterTeams: Array<SelectOptionItem>;
   filterTeamMap: Map<string, SelectOptionItem>;
+  filterTeamIds: Array<SelectOptionItem>;
+  filterTeamIdMap: Map<string, SelectOptionItem>;
 
   enableAnimatedSubmissions: boolean;
 
@@ -48,6 +50,8 @@ export class RankOptions {
 
     this.filterTeams = [];
     this.filterTeamMap = new Map<string, SelectOptionItem>();
+    this.filterTeamIds = [];
+    this.filterTeamIdMap = new Map<string, SelectOptionItem>();
 
     this.enableAnimatedSubmissions = false;
 
@@ -67,6 +71,8 @@ export class RankOptions {
 
     this.filterTeams = self.filterTeams;
     this.filterTeamMap = self.filterTeamMap;
+    this.filterTeamIds = self.filterTeamIds;
+    this.filterTeamIdMap = self.filterTeamIdMap;
 
     this.enableAnimatedSubmissions = self.enableAnimatedSubmissions;
 
@@ -115,6 +121,16 @@ export class RankOptions {
 
     this.filterTeams = filterTeams;
     this.filterTeamMap = m;
+  }
+
+  setFilterTeamIds(filterTeamIds: Array<SelectOptionItem>) {
+    const m = new Map<string, SelectOptionItem>();
+    filterTeamIds.forEach((item) => {
+      m.set(item.value, item);
+    });
+
+    this.filterTeamIds = filterTeamIds;
+    this.filterTeamIdMap = m;
   }
 
   isNeedReBuildRank(nextRankOptions: RankOptions): boolean {
@@ -191,8 +207,16 @@ export class Rank {
 
     this.submissionsMap = new Map(this.submissions.map(s => [s.id, s]));
 
-    this.organizationsMap = this.buildOrganizationsMap();
-    this.organizations = [...this.organizationsMap.values()];
+    if (this.contest.organizations) {
+      this.organizations = this.contest.organizations;
+      this.organizationsMap = new Map<string, Organization>(
+        this.organizations.map(org => [org.id, org]),
+      );
+      this.linkTeamAndOrg();
+    } else {
+      this.organizationsMap = this.buildOrganizationsMap();
+      this.organizations = [...this.organizationsMap.values()];
+    }
     this.organizations.sort(Organization.compare);
 
     this.originTeams = this.teams.map(t => t);
@@ -227,8 +251,17 @@ export class Rank {
     }
   }
 
+  linkTeamAndOrg() {
+    this.teams.forEach((t) => {
+      if (!t.organizationId) {
+        return;
+      }
+      t.organization = this.organizationsMap.get(t.organizationId);
+    });
+  }
+
   buildOrganizationsMap() {
-    if (!this.contest.organization) {
+    if (!this.contest.options.enableOrganization) {
       return new Map<string, Organization>();
     }
 
@@ -470,7 +503,7 @@ export class Rank {
   }
 
   buildOrgRank() {
-    if (!this.contest.organization) {
+    if (!this.contest.options.enableOrganization) {
       return;
     }
 

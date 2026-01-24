@@ -54,6 +54,7 @@ declare global {
   const getCurrentScope: typeof import('vue').getCurrentScope
   const getCurrentWatcher: typeof import('vue').getCurrentWatcher
   const getLocalStorageKeyForFilterOrganizations: typeof import('./composables/useLocalStorage').getLocalStorageKeyForFilterOrganizations
+  const getLocalStorageKeyForFilterTeamIds: typeof import('./composables/useLocalStorage').getLocalStorageKeyForFilterTeamIds
   const getLocalStorageKeyForFilterTeams: typeof import('./composables/useLocalStorage').getLocalStorageKeyForFilterTeams
   const getMedalColor: typeof import('./composables/color').getMedalColor
   const getProblemChart: typeof import('./composables/statistics').getProblemChart
@@ -212,6 +213,7 @@ declare global {
   const useGeolocation: typeof import('@vueuse/core').useGeolocation
   const useHead: typeof import('@unhead/vue').useHead
   const useHeadSafe: typeof import('@unhead/vue').useHeadSafe
+  const useHlsPlayer: typeof import('./composables/useHlsPlayer').useHlsPlayer
   const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
   const useIdle: typeof import('@vueuse/core').useIdle
@@ -225,6 +227,7 @@ declare global {
   const useLink: typeof import('vue-router/auto').useLink
   const useLocalStorage: typeof import('@vueuse/core').useLocalStorage
   const useLocalStorageForFilterOrganizations: typeof import('./composables/useLocalStorage').useLocalStorageForFilterOrganizations
+  const useLocalStorageForFilterTeamIds: typeof import('./composables/useLocalStorage').useLocalStorageForFilterTeamIds
   const useLocalStorageForFilterTeams: typeof import('./composables/useLocalStorage').useLocalStorageForFilterTeams
   const useMagicKeys: typeof import('@vueuse/core').useMagicKeys
   const useManualRefHistory: typeof import('@vueuse/core').useManualRefHistory
@@ -232,6 +235,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core').useMediaQuery
   const useMemoize: typeof import('@vueuse/core').useMemoize
   const useMemory: typeof import('@vueuse/core').useMemory
+  const useModalStack: typeof import('./composables/useModalStack').useModalStack
   const useModel: typeof import('vue').useModel
   const useMounted: typeof import('@vueuse/core').useMounted
   const useMouse: typeof import('@vueuse/core').useMouse
@@ -418,6 +422,7 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getCurrentWatcher: UnwrapRef<typeof import('vue')['getCurrentWatcher']>
     readonly getLocalStorageKeyForFilterOrganizations: UnwrapRef<typeof import('./composables/useLocalStorage')['getLocalStorageKeyForFilterOrganizations']>
+    readonly getLocalStorageKeyForFilterTeamIds: UnwrapRef<typeof import('./composables/useLocalStorage')['getLocalStorageKeyForFilterTeamIds']>
     readonly getLocalStorageKeyForFilterTeams: UnwrapRef<typeof import('./composables/useLocalStorage')['getLocalStorageKeyForFilterTeams']>
     readonly getMedalColor: UnwrapRef<typeof import('./composables/color')['getMedalColor']>
     readonly getProblemChart: UnwrapRef<typeof import('./composables/statistics')['getProblemChart']>
@@ -575,6 +580,7 @@ declare module 'vue' {
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
     readonly useHead: UnwrapRef<typeof import('@unhead/vue')['useHead']>
     readonly useHeadSafe: UnwrapRef<typeof import('@unhead/vue')['useHeadSafe']>
+    readonly useHlsPlayer: UnwrapRef<typeof import('./composables/useHlsPlayer')['useHlsPlayer']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
@@ -588,6 +594,7 @@ declare module 'vue' {
     readonly useLink: UnwrapRef<typeof import('vue-router/auto')['useLink']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useLocalStorageForFilterOrganizations: UnwrapRef<typeof import('./composables/useLocalStorage')['useLocalStorageForFilterOrganizations']>
+    readonly useLocalStorageForFilterTeamIds: UnwrapRef<typeof import('./composables/useLocalStorage')['useLocalStorageForFilterTeamIds']>
     readonly useLocalStorageForFilterTeams: UnwrapRef<typeof import('./composables/useLocalStorage')['useLocalStorageForFilterTeams']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
@@ -595,6 +602,7 @@ declare module 'vue' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
+    readonly useModalStack: UnwrapRef<typeof import('./composables/useModalStack')['useModalStack']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>

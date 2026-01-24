@@ -1,13 +1,17 @@
-import type { BannerMode, Contest as IContest, Image, MedalPreset, StatusTimeDisplay } from "@xcpcio/types";
+import type { BannerMode, Contest as IContest, Image, Organizations as IOrganizations, SeatMap as ISeatMap, MedalPreset, SocialMedia, StatusTimeDisplay } from "@xcpcio/types";
 import type { Awards } from "./award";
+import type { Organizations } from "./organization";
 import type { Problem, Problems } from "./problem";
-import { ContestState } from "@xcpcio/types";
+import type { SeatMap } from "./seat-map";
 
+import { ContestState } from "@xcpcio/types";
 import { Award, MedalType } from "./award";
 import { I18nText } from "./basic-types";
 import { ContestOptions, createContestOptions } from "./contest-options";
 import { Group } from "./group";
+import { createOrganizations } from "./organization";
 import { createProblems, createProblemsByProblemIds } from "./problem";
+import { createSeatMap } from "./seat-map";
 import { createDayJS, dayjs, getTimeDiff } from "./utils";
 
 export class Contest {
@@ -35,9 +39,6 @@ export class Contest {
 
   statusTimeDisplay: StatusTimeDisplay;
 
-  badge?: string;
-  organization?: string;
-
   medal?: Record<string, Record<string, number>> | MedalPreset;
   awards?: Awards;
 
@@ -48,8 +49,12 @@ export class Contest {
   banner?: Image;
   bannerMode?: BannerMode;
   boardLink?: string;
+  socialMedia?: SocialMedia;
 
   options: ContestOptions;
+
+  organizations?: Organizations;
+  seatMap?: SeatMap;
 
   constructor() {
     this.name = new I18nText();
@@ -255,9 +260,6 @@ export function createContest(contestJSON: IContest): Contest {
     };
   }
 
-  c.badge = contestJSON.badge;
-  c.organization = contestJSON.organization;
-
   c.medal = contestJSON.medal;
 
   (() => {
@@ -347,9 +349,18 @@ export function createContest(contestJSON: IContest): Contest {
 
   c.logo = contestJSON.logo;
   c.boardLink = contestJSON.board_link;
+  c.socialMedia = contestJSON.social_media;
 
   if (contestJSON.options) {
     c.options = createContestOptions(contestJSON.options);
+  }
+
+  if (contestJSON.organizations) {
+    c.organizations = createOrganizations(contestJSON.organizations as IOrganizations);
+  }
+
+  if (contestJSON.seat_map && !("url" in contestJSON.seat_map)) {
+    c.seatMap = createSeatMap(contestJSON.seat_map as ISeatMap);
   }
 
   return c;

@@ -12,11 +12,7 @@ const rank = computed(() => props.rank);
 function getColSpan() {
   let res = 3;
 
-  if (rank.value.contest.organization) {
-    res++;
-  }
-
-  if (rank.value.contest.badge) {
+  if (rank.value.contest.options.enableOrganization) {
     res++;
   }
 

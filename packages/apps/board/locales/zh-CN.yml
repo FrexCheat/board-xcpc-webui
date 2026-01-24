@@ -35,17 +35,27 @@ type_menu:
   options: 选项
   utility: 工具
   countdown: 倒计时
+  teams: 队伍
+  info: 信息
+
+info_modal:
+  color_legend: 颜色图例
 
 streams:
   webcam: 摄像头
   screen: 屏幕
   unavailable: 直播不可用
+  realtime_reaction: 实时反应
   layout:
     side_by_side: 并排
     pip: 画中画
   pip:
     main: 主画面
     position: 位置
+    top_left: 左上角
+    top_right: 右上角
+    bottom_left: 左下角
+    bottom_right: 右下角
 
 utility:
   tools: 工具集
@@ -58,7 +68,9 @@ standings:
   remaining: 剩余时间
 
   place: Place
+  organization: Organization
   team: Team
+  group: Group
   solved: Solved
   penalty: Penalty
   dirt: Dirt
@@ -93,7 +105,10 @@ balloons:
 
 team_info:
   rank: 排名
+  team_id: 队伍 ID
   team_name: 队名
+  org_id: 组织 ID
+  org_name: 组织名
   organization: 组织
   group: 组别
   members: 队员
@@ -106,3 +121,14 @@ medal:
   silver: 银奖
   bronze: 铜奖
   honorable: 优胜奖
+
+org_info:
+  rank: 排名
+  name: 组织
+  icpc_id: ICPC ID
+  teams_count: 队伍数
+
+pending_page:
+  no_teams: 暂无注册队伍
+  teams_tab: 队伍列表
+  seat_map_tab: 座位图

@@ -9,6 +9,7 @@ const props = defineProps<{
   team: Team;
   isFilter?: boolean;
   giantsType?: GiantsType;
+  hideOrganization?: boolean;
 }>();
 
 const el = ref(null);
@@ -19,12 +20,21 @@ function onClickTeamModal() {
   hiddenTeamModal.value = false;
 }
 
+const hiddenOrgModal = ref(true);
+function onClickOrgModal() {
+  hiddenOrgModal.value = false;
+}
+
 const { locale } = useI18n();
 const lang = computed(() => locale.value as unknown as Lang);
 
 const rank = computed(() => props.rank);
 const team = computed(() => props.team);
 const teamName = computed(() => team.value.name.getOrDefault(lang.value));
+
+const showOrganization = computed(() => {
+  return rank.value.contest.options.enableOrganization && !props.hideOrganization;
+});
 
 function getStandClassName(t: Team, isRankField = false): string {
   if (isRankField) {
@@ -89,21 +99,20 @@ function isRenderByVisible() {
       {{ team.rank }}
     </td>
     <td
-      v-if="rank.contest.badge && team.badge && isRenderByVisible()"
-      class="empty flex items-center justify-center"
-      style="padding: 0px !important; margin: 0px !important;"
-    >
-      <Badge
-        :image="team.badge"
-        width-class="w-full h-full"
-      />
-    </td>
-    <td
-      v-if="rank.contest.organization && isRenderByVisible()"
-      class="stnd"
+      v-if="showOrganization && isRenderByVisible()"
+      class="stnd relative"
       :class="[getStandClassName(team)]"
     >
-      <div flex>
+      <div
+        v-if="team?.organization?.logo"
+        class="absolute left-0 top-0 bottom-0 flex items-center px-1"
+      >
+        <Badge
+          :image="team?.organization?.logo"
+          width-class="h-full w-auto"
+        />
+      </div>
+      <div flex flex-1 :class="team?.organization?.logo ? 'pl-10' : ''">
         <div
           float-left pl-2
         >
@@ -115,23 +124,46 @@ function isRenderByVisible() {
         </div>
         <div
           flex-1
+          cursor-pointer
+          line-clamp-2
+          @click="onClickOrgModal"
         >
           {{ team.organization?.name.getOrDefault(lang) }}
         </div>
         <div float-right />
       </div>
+
+      <div>
+        <OrgModal
+          v-if="!hiddenOrgModal && team.organization"
+          v-model:is-hidden="hiddenOrgModal"
+          :rank="rank"
+          :organization="team.organization"
+        />
+      </div>
     </td>
 
     <td
       v-if="isRenderByVisible()"
-      class="stnd"
+      class="stnd relative"
       :class="[getStandClassName(team)]"
     >
       <div
+        v-if="team.badge"
+        class="absolute left-0 top-0 bottom-0 flex items-center px-1"
+      >
+        <Badge
+          :image="team.badge"
+          width-class="h-full w-auto"
+        />
+      </div>
+      <div
+        flex items-center justify-center
         cursor-pointer
+        :class="team.badge ? 'pl-10' : ''"
         @click="onClickTeamModal"
       >
-        <span>{{ teamName }}</span>
+        <span line-clamp-2>{{ teamName }}</span>
         <span v-if="team.group.includes('unofficial')" class="i-line-md:star-alt-filled" />
         <span v-if="team.group.includes('girl')" class="i-tabler:flower-filled" />
       </div>

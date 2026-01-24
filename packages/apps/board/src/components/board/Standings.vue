@@ -26,6 +26,10 @@ const filterTeams = computed(() => {
       return true;
     }
 
+    if (props.rank.options.filterTeamIdMap.has(t.id)) {
+      return true;
+    }
+
     return false;
   });
 
@@ -154,7 +158,7 @@ const maxTeamLength = computed(() => {
     <div>
       <table
         class="standings"
-        font-mono dark:text-gray-700
+        font-mono dark:text-gray-200
       >
         <thead
           class="sticky top-0 z-99"
@@ -167,18 +171,11 @@ const maxTeamLength = computed(() => {
               {{ t("standings.place") }}
             </th>
             <th
-              v-if="rank.contest.badge"
-              class="title"
-              style="width: 2.5rem;"
-            >
-              {{ rank.contest.badge }}
-            </th>
-            <th
-              v-if="rank.contest.organization"
+              v-if="rank.contest.options.enableOrganization"
               class="title"
               :style="{ width: `${Math.min(32, Math.ceil(maxOrgLength * 1.1))}rem` }"
             >
-              {{ rank.contest.organization }}
+              {{ t("standings.organization") }}
             </th>
             <th
               class="title"

@@ -1,5 +1,6 @@
 import type { BalloonColor, DataItem, DateTimeISO8601String, Image, Organizations, StatusTimeDisplay, Text, TimeUnit } from "./basic-types";
 import type { Problem } from "./problem";
+import type { SeatMap } from "./seat-map";
 
 export enum ContestState {
   PENDING = "PENDING",
@@ -14,6 +15,7 @@ export type CalculationOfPenalty = "in_minutes"
   | "accumulate_in_seconds_and_finally_to_the_minute";
 
 export interface ContestOptions {
+  enable_organization?: boolean;
   calculation_of_penalty?: CalculationOfPenalty;
   submission_timestamp_unit?: TimeUnit;
 
@@ -41,10 +43,23 @@ export interface ContestOptions {
   // example: https://your.code.cdn/wf/2025/${submission_id}.zip
   // ${submission_id} will be replaced with the submission id
   submission_source_code_url_template?: string;
+
+  // example: https://your.stream.cdn/wf/2025/${submission_id}/webcam/index.m3u8
+  // ${submission_id} will be replaced with the submission id
+  realtime_reaction_webcam_stream_url_template?: string;
+
+  // example: https://your.stream.cdn/wf/2025/${submission_id}/screen/index.m3u8
+  // ${submission_id} will be replaced with the submission id
+  realtime_reaction_screen_stream_url_template?: string;
 }
 
 export type MedalPreset = "ccpc" | "icpc";
 export type BannerMode = "ONLY_BANNER" | "ALL";
+
+export interface SocialMedia {
+  bilibili?: string;
+  youtube?: string;
+}
 
 export interface Contest {
   contest_name: Text;
@@ -65,9 +80,6 @@ export interface Contest {
 
   status_time_display?: StatusTimeDisplay;
 
-  badge?: string;
-  organization?: string;
-
   medal?: Record<string, Record<string, number>> | MedalPreset;
 
   group?: Record<string, string>;
@@ -80,7 +92,10 @@ export interface Contest {
   options?: ContestOptions;
 
   organizations?: DataItem | Organizations;
+  seat_map?: DataItem | SeatMap;
 
   board_link?: string;
   version?: string;
+
+  social_media?: SocialMedia;
 }

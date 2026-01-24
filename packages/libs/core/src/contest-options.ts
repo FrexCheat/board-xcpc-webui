@@ -1,6 +1,7 @@
 import type { CalculationOfPenalty, ContestOptions as IContestOptions, Image, TimeUnit } from "@xcpcio/types";
 
 export class ContestOptions {
+  enableOrganization: boolean;
   calculationOfPenalty: CalculationOfPenalty;
   submissionTimestampUnit: TimeUnit;
 
@@ -10,6 +11,7 @@ export class ContestOptions {
   submissionEnableActionField: boolean;
   submissionHasReactionField: boolean;
   submissionHasExternalUrlField: boolean;
+  submissionHasRealtimeReactionStreamField: boolean;
 
   reactionVideoUrlTemplate?: string;
   submissionExternalUrlTemplate?: string;
@@ -18,7 +20,11 @@ export class ContestOptions {
   teamWebcamStreamUrlTemplate?: string;
   teamScreenStreamUrlTemplate?: string;
 
+  realtimeReactionWebcamStreamUrlTemplate?: string;
+  realtimeReactionScreenStreamUrlTemplate?: string;
+
   constructor() {
+    this.enableOrganization = false;
     this.calculationOfPenalty = "in_minutes";
     this.submissionTimestampUnit = "second";
 
@@ -28,12 +34,15 @@ export class ContestOptions {
     this.submissionEnableActionField = false;
     this.submissionHasReactionField = false;
     this.submissionHasExternalUrlField = false;
+    this.submissionHasRealtimeReactionStreamField = false;
   }
 }
 
 export function createContestOptions(contestOptionsJSON: IContestOptions = {}): ContestOptions {
   const j = contestOptionsJSON;
   const o = new ContestOptions();
+
+  o.enableOrganization = !!j.enable_organization;
 
   if (j.calculation_of_penalty) {
     o.calculationOfPenalty = j.calculation_of_penalty;
@@ -52,7 +61,13 @@ export function createContestOptions(contestOptionsJSON: IContestOptions = {}): 
     o.submissionExternalUrlTemplate = j.submission_external_url_template;
   }
 
-  o.submissionEnableActionField = o.submissionHasReactionField || o.submissionHasExternalUrlField;
+  if (j.realtime_reaction_webcam_stream_url_template || j.realtime_reaction_screen_stream_url_template) {
+    o.submissionHasRealtimeReactionStreamField = true;
+    o.realtimeReactionWebcamStreamUrlTemplate = j.realtime_reaction_webcam_stream_url_template;
+    o.realtimeReactionScreenStreamUrlTemplate = j.realtime_reaction_screen_stream_url_template;
+  }
+
+  o.submissionEnableActionField = o.submissionHasReactionField || o.submissionHasExternalUrlField || o.submissionHasRealtimeReactionStreamField;
   o.reactionVideoUrlTemplate = j.reaction_video_url_template;
   o.teamPhotoTemplate = j.team_photo_url_template;
 
