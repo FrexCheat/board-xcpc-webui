@@ -48,7 +48,7 @@
           <div
             mr-4 md:mr-6
           >
-            <HeatMapTooltip>
+            <Tooltip>
               <a
                 :href="GITHUB_URL"
                 hover:underline
@@ -59,7 +59,7 @@
                 GitHub
               </a>
 
-              <template #tooltip-content>
+              <template #popper>
                 <div
                   flex justify-center items-start
                   flex-col
@@ -68,7 +68,7 @@
                   <div>Sha: {{ GITHUB_SHA }}</div>
                 </div>
               </template>
-            </HeatMapTooltip>
+            </Tooltip>
           </div>
         </li>
 
@@ -76,8 +76,8 @@
           <div
             mr-4 md:mr-6
           >
-            <HeatMapTooltip
-              position="right"
+            <Tooltip
+              placement="right"
             >
               <a
                 href="mailto:admin@frexlink.com"
@@ -86,7 +86,7 @@
                 Contact
               </a>
 
-              <template #tooltip-content>
+              <template #popper>
                 <div
                   flex justify-center items-start
                   flex-col
@@ -96,7 +96,7 @@
                   <div>Data Region: {{ DATA_REGION }}</div>
                 </div>
               </template>
-            </HeatMapTooltip>
+            </Tooltip>
           </div>
         </li>
       </ul>
@@ -107,7 +107,7 @@
       >© 2020-PRESENT <RouterLink
         to="/"
         hover:underline
-      >XCPCIO™</RouterLink>. All Rights Reserved. Adapted by ZZULI.</span>
+      >XCPCIO™</RouterLink>. All Rights Reserved. Modified by ZZULI.</span>
     </div>
   </footer>
 </template>

@@ -533,14 +533,14 @@ function closeRealtimeStreamModal() {
 
                   <td class="whitespace-nowrap px-4 py-2 text-gray-900 dark:text-white">
                     <div flex items-center>
-                      <HeatMapTooltip
-                        position="left"
+                      <Tooltip
+                        placement="left"
                       >
                         {{ s.timestampDisplayFormatWithSecond }}
-                        <template #tooltip-content>
+                        <template #popper>
                           {{ s.timestampDisplayFormatWithMilliSecond }}
                         </template>
-                      </HeatMapTooltip>
+                      </Tooltip>
                     </div>
                   </td>
 

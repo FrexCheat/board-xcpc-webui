@@ -75,8 +75,8 @@ const headerTitle = computed(() => team.value.name.getOrDefault(lang.value));
                 width-class="h-16 w-16"
               />
 
-              <HeatMapTooltip
-                position="right"
+              <Tooltip
+                placement="right"
               >
                 <h3
                   text-gray-900 dark:text-white
@@ -86,7 +86,7 @@ const headerTitle = computed(() => team.value.name.getOrDefault(lang.value));
                   {{ headerTitle }}
                 </h3>
 
-                <template #tooltip-content>
+                <template #popper>
                   <div
                     flex flex-col
                     justify-start items-start
@@ -99,7 +99,7 @@ const headerTitle = computed(() => team.value.name.getOrDefault(lang.value));
                     </div>
                   </div>
                 </template>
-              </HeatMapTooltip>
+              </Tooltip>
             </div>
 
             <ModalMenu

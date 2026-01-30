@@ -206,12 +206,12 @@ const maxTeamLength = computed(() => {
             </template>
 
             <th class="title" style="width: 2.5rem;">
-              <HeatMapTooltip>
+              <Tooltip>
                 <div>
                   {{ t("standings.dirt") }}
                 </div>
 
-                <template #tooltip-content>
+                <template #popper>
                   <div>
                     number of submits on the
                     <br>
@@ -220,16 +220,16 @@ const maxTeamLength = computed(() => {
                     of the solved problems
                   </div>
                 </template>
-              </HeatMapTooltip>
+              </Tooltip>
             </th>
 
             <th class="title" style="width: 2.5rem;">
-              <HeatMapTooltip position="left">
+              <Tooltip placement="left">
                 <div>
                   {{ t("standings.se") }}
                 </div>
 
-                <template #tooltip-content>
+                <template #popper>
                   <div>
                     "average hardness".
                     <br>
@@ -238,7 +238,7 @@ const maxTeamLength = computed(() => {
                     have hardness (M-N)/M.
                   </div>
                 </template>
-              </HeatMapTooltip>
+              </Tooltip>
             </th>
           </tr>
         </thead>
