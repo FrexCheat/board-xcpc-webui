@@ -173,6 +173,7 @@ class Submissions(RootModel[List[Submission]]):
 class Team(BaseModel):
     id: str = ""
     name: Text = ""
+    description: Optional[Text] = None
 
     organization: Optional[str] = None
     organization_id: Optional[str] = None
@@ -230,6 +231,8 @@ class ContestOptions(BaseModel):
 
     realtime_reaction_webcam_stream_url_template: Optional[str] = None
     realtime_reaction_screen_stream_url_template: Optional[str] = None
+
+    disable_pending_page: Optional[bool] = None
 
 
 class Contest(BaseModel):
