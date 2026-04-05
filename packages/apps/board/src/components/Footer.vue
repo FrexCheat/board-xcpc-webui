@@ -80,7 +80,7 @@
               placement="right"
             >
               <a
-                href="mailto:admin@frexlink.com"
+                href="mailto:contact@frexlink.com"
                 hover:underline
               >
                 Contact
