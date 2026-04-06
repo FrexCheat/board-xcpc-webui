@@ -25,7 +25,7 @@ const problemLastSelectItem = ref({});
 
 const problemOptions = computed(() => {
   return contestData.value.problems.map((p) => {
-    return { value: p.label, text: p.label + p.name };
+    return { value: p.label, text: p.label + p.name?.getOrDefault(lang.value) };
   });
 });
 
