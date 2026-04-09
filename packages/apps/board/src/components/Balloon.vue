@@ -24,9 +24,13 @@ const problemSelectedItems = ref<Array<SelectOptionItem>>([]);
 const problemLastSelectItem = ref({});
 
 const problemOptions = computed(() => {
-  return contestData.value.problems.map((p) => {
-    return { value: p.label, text: p.label + p.name?.getOrDefault(lang.value) };
+  const res = contestData.value.problems.map((p) => {
+    return {
+      value: p.label,
+      text: p.label,
+    };
   });
+  return res;
 });
 
 function problemOnSelect(selectedItems: Array<SelectOptionItem>, lastSelectItem: SelectOptionItem) {
@@ -130,7 +134,7 @@ const balloons = computed(() => {
           <div
             w-550px
           >
-            <MultiSelect
+            <TheMultiSelect
               :options="problemOptions"
               :selected-options="problemSelectedItems"
               placeholder="题目 ID"
